@@ -12,6 +12,7 @@ import UIKit
 class ParseStudentLocationDataSource: NSObject {
     
     var studentLocations = [ParseStudentLocation]()
+    let nc = NSNotificationCenter.defaultCenter()
     
 //    set up will refresh, did refresh notifications, and error notifications
     
@@ -22,10 +23,9 @@ class ParseStudentLocationDataSource: NSObject {
         ParseClient.sharedInstance().getStudentLocations { studentResults, error in
             if let studentLocations = studentResults {
                 self.studentLocations = studentLocations
-//                send did refresh notification
             } else {
                 print("in refresh students: \(error)")
-//                send notification error
+                self.nc.postNotificationName("parseDownloadFail", object: nil)
             }
         }
     }
