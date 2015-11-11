@@ -45,7 +45,7 @@ class ParseClient: NSObject {
         let request = NSMutableURLRequest(URL: url!)
         request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
-        
+        request.timeoutInterval = 5
         
         
         let task = session.dataTaskWithRequest(request) { data, response, error in
@@ -80,6 +80,7 @@ class ParseClient: NSObject {
         request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.HTTPMethod = "POST"
+        request.timeoutInterval = 5
         
         do {
             request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(parameters, options: NSJSONWritingOptions())
@@ -91,7 +92,7 @@ class ParseClient: NSObject {
             }
             
             guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
-                completionHandler(result: nil, error: NSError(domain: "parse", code: 1, userInfo: [NSLocalizedDescriptionKey: "Parse post status code error"]))
+                completionHandler(result: nil, error: NSError(domain: "parse", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed on post to parse"]))
                 return
             }
             

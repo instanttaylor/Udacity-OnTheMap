@@ -92,7 +92,11 @@ class StudentInputViewController: UIViewController {
         ParseClient.sharedInstance().postStudentLocation(jsonBody) { success, error in
             self.nc.postNotificationName("hideSpinner", object: nil)
             if error != nil {
-                self.alertWithTitle("Ooops", message: "Failed to post location")
+                if let errorString = error?.userInfo["NSLocalizedDescription"]{
+                    self.alertWithTitle("Ooops", message: errorString as! String)
+                } else {
+                    self.alertWithTitle("Ooops", message: "Failed to post location")
+                }
             } else {
                 dispatch_async(dispatch_get_main_queue()) {
                     self.dismissViewControllerAnimated(true, completion: nil)
